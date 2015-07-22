@@ -1,4 +1,4 @@
-//int kkjklj = 3;///*
+int kkjklj = 3;///*
 string man = ewe;//dfgk;el
 string man = ewe;/*sfsdfd*/
 string man =/*werer*/ ewe;//
@@ -21,8 +21,9 @@ string = /*afsdfs'"
 
 
 /*afsdfs'"
-"*/R"(fdsf)";//"
+"*/R(fdsf);//"
 '//'
 //  \
 ioi
 
+""

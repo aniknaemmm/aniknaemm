@@ -4,7 +4,7 @@
 
 int main()
 {
-	setlocale(LC_CTYPE, "rus");
+	//setlocale(LC_CTYPE, "rus");
 
 	enum Regim{ text, str, comment, doubleComent, start } regim = start;
 	std::ofstream fout("edittxt.cpp");
@@ -27,14 +27,14 @@ int main()
 	{
 		std::getline(fin, buf);//Get line
 
-
-		for (int i = 0; i < buf.length(); i++)
+		for (int i = 0; i <= buf.length(); i++)
 		{
 			if (regim == start)
 			{
-				if (buf[i] == '\"') regim = str;
-				else if (buf[i] == '/' && (buf[i + 1] == '*'))
-					regim = comment;
+				if (buf[i] == '"') regim = str;
+				else if (buf[i] == '/' && (buf[i + 1] == '*')){
+					i++;	regim = comment;
+				}
 				else if (buf[i] == '/' &&buf[i + 1] == '/')
 					regim = doubleComent;
 				else regim = text;
@@ -45,45 +45,63 @@ int main()
 			{
 						 fout << buf[i];
 						 std::cout << buf[i];
-						 //chek rehim
-						 if (i != buf.length() - 1){
-							 if (buf[i + 1] == '\"') regim = str;
+						 if (i != buf.length()){
+							 if (buf[i + 1] == '"') regim = str;
 
 							 else if (buf[i + 1] == '/' && (buf[i + 2] == '*'))
+							 {
+								 i++;
 								 regim = comment;
+							 }
 							 else if (buf[i + 1] == '/' &&buf[i + 2] == '/')
+							 {
 								 regim = doubleComent;
+							 }
+						 }
+						 else
+						 {
+							 regim = start;
 						 }
 
 						 break;
 			}
 			case str:
 			{
-						if (i != buf.length() - 1){
+						if (i != buf.length()){
 							fout << buf[i];
 							std::cout << buf[i];
-							if (buf[i + 2] = '"'&&buf[i + 1] != '\\')
+							if (buf[i] != '\\'&&buf[i+1] == '"')
+							{
+								i++; fout << buf[i];
+								std::cout << buf[i];
 								regim = start;
-						}	break;
+							}
+						}
+						else
+						{
+							regim = start;
+						}
+						break;
 
 			}
 			case doubleComent: {
 
 
-								   i = buf.length() - 1;
+								   i = buf.length() ;
 								   regim = start;
 
 								   break;
 			}
 			case comment: {
 
-							  if (i != buf.length() - 1){
-								  if (buf[i + 1] == '\*'&&buf[i + 2] == '/')
+							  if (i != buf.length() ){
+								  if (buf[i] == '\*'&&buf[i +1] == '/')
 								  {
-									  i += 2;
+									  i += 1;
 									  regim = start;
 								  }
 							  }
+							  
 							  break; }
 			}
 
@@ -92,7 +110,10 @@ int main()
 		std::cout << std::endl;
 
 	}
-
+		fout.close();
+	
+		fin.close();
+	
 	getc(stdin);
 
 	return 0;
